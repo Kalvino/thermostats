@@ -1,0 +1,25 @@
+<% if @readings.present? %>
+    <h3 style="margin-left:10%;">Thermostat Reading</h3>
+    <table cellspacing="0" cellpadding="0" width="80%" align="center" style="background-color:#FFF; color:#999999;">
+      <thead>
+        <tr style="padding-top:10px; padding-bottom:10px; background-color:#f5f5f5;">
+          <th>Number</th>
+          <th>Temperature</th>
+          <th>Humidity</th>
+          <th>Battery Charge</th>
+        </tr>
+      </thead>
+      <% @readings.each do |r| %>
+        <tbody>
+          <tr>
+            <th style="padding: 5px"><%= r.number %></th>
+            <td style="text-align: center; padding: 5px;"><%= r.temperature %></td>
+            <td style="text-align: center; padding: 5px;"><%= r.humidity %></td>
+            <td style="text-align: center; padding: 5px;"><%= r.battery_charge %></td>
+          </tr>
+        </tbody>
+      <% end %>
+    </table><br/><br/><br/>
+  <% else %>
+    <h3>No reading found.</h3>
+  <% end %>

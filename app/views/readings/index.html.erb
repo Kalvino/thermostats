@@ -1,0 +1,31 @@
+<center><h2>IOT Thermostat</h2></center>
+
+<%#= simple_format @thermostats.to_yaml %>
+<%#= debug @thermostats %>
+<%#= @thermostats.inspect %>
+
+<% @thermostats.each do |t| %>
+  <table cellspacing="0" cellpadding="0" width="80%" align="center" style="background-color:#FFF; color:#666666; font-family: avenir, Arial, 'Times New Roman', Times, serif;">
+    <thead>
+      <tr style="padding-top:10px; padding-bottom:10px; background-color:#f5f5f5;">
+        <th>Id</th>
+        <th>Household Token</th>
+        <th>Location</th>
+        <th>Readings</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background-color:#c56933; height:1px; font-size:0px;">
+        <td colspan="3">&nbsp;</td>
+      </tr>
+      <tr>
+        <th style="padding: 5px"><%= t.id %></th>
+        <td style="text-align: center; padding: 5px;"><%= t.household_token %></td>
+        <td style="padding: 5px"><%= t.location %></td>
+        <td style="padding: 5px"><%= link_to "Reading", house_readings_path(:household_token => t.household_token) %></td>
+
+      </tr>
+    </tbody><br/>
+  </table>
+<% end %>
