@@ -15,7 +15,7 @@ RSpec.describe ReadingsController, type: :controller do
 
     context 'when household token is invalid' do
       it "return invalid household token message" do
-        post :create, params: { household_token: 'abc', temperature: "15", humidity: "31", battery_charge: "89" }
+        post :create, params: { thermostat_id: 'abc', temperature: "15", humidity: "31", battery_charge: "89" }
         parsed_response = JSON.parse(response.body)
         expect(parsed_response["message"]).to eq('Invalid Household token!')
       end
@@ -23,7 +23,7 @@ RSpec.describe ReadingsController, type: :controller do
 
     context 'when params are missing and household token is valid' do
       it "return errors message" do
-        post :create, params: { household_token: thermostat.household_token, humidity: "32" }
+        post :create, params: { thermostat_id: thermostat.thermostat_id, humidity: "32" }
         parsed_response = JSON.parse(response.body)
         expect(parsed_response["message"]).to eq('Required parameters missing!')
       end
@@ -31,7 +31,7 @@ RSpec.describe ReadingsController, type: :controller do
 
     context 'when all required params are present and household token is valid' do
       it "return successful posting of readings" do
-        post :create, params: { household_token: thermostat.household_token, number: 2, temperature: "15", humidity: "31", battery_charge: "89"}
+        post :create, params: { thermostat_id: thermostat.thermostat_id, number: 2, temperature: "15", humidity: "31", battery_charge: "89"}
         expect(response.status).to eq(200)
       end
     end
@@ -48,7 +48,7 @@ RSpec.describe ReadingsController, type: :controller do
 
     context 'when household token present' do
       it "renders a reading for a particular thermostat" do
-        get :show, params: { household_token: thermostat.household_token, number: reading.number }
+        get :show, params: { thermostat_id: thermostat.thermostat_id, number: reading.number }
         expect(response.status).to eq(200)
       end
     end

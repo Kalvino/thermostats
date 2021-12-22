@@ -99,6 +99,9 @@ Reading.create!(thermostat_id: 1, number: 200, temperature: -7.5, humidity: 14, 
     }
 ]
 
+start sidekiq
+bundle exec sidekiq
+
 
 
 

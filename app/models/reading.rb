@@ -6,8 +6,8 @@ class Reading < ApplicationRecord
   after_create :clear_redis_data  
 
   # validations
-  validates :number, :temperature, :humidity, :battery_charge, presence: true
-  validates :number, numericality: { only_integer: true }, uniqueness: true
+  validates :temperature, :humidity, :battery_charge, presence: true
+  # validates :number, numericality: { only_integer: true }, uniqueness: true
   validates :temperature, :humidity, :battery_charge, numericality: { only_float: true }
 
   # next sequence number

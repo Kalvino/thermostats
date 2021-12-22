@@ -11,44 +11,22 @@ class ReadingsController < ApplicationController
 
   # add reading for a particular thermostat
   def create
-    if %w[temperature humidity battery_charge].all? {|key| params[key].present?}
-      number = Reading.sequence_number
-      temperature = params[:temperature]
-      humidity = params[:humidity]
-      battery_charge = params[:battery_charge]
+    number = Reading.sequence_number
+    new_hash = request.parameters.merge(number: number)
+    params_extract = new_hash.extract!(:temperature, :humidity, :battery_charge, :thermostat_id, :number)
 
-      reading = Reading.new(
-        thermostat_id: @thermostat.id, 
-        number: number, 
-        temperature: temperature,
-        humidity: humidity,
-        battery_charge: battery_charge
-      )
+    reading = @thermostat.readings.new(reading_params)
+    render json: { errors: reading.errors } and return if reading.invalid?
+    redis_key = "reading_" + number.to_s
+    $redis_db.set(redis_key, params_extract)
+    ReadingWorker.perform_in(1.minutes, params_extract)
 
-      render json: { errors: reading.errors } and return if reading.invalid?
-
-
-      # extracts necesary params for redis storage
-      slim_params = params.extract!(:temperature, :humidity, :battery_charge, :household_token)
-
-      # create redis key
-      redis_key = "reading_" + number.to_s
-
-      $redis_db.set(redis_key, slim_params)
-      ReadingWorker.perform_in(5.minutes, number, @thermostat.id, temperature, humidity, battery_charge)
-      render json: {number: number, redis:$redis_db.keys}
-
-
-      # HardWorker.perform_in(5.minutes, 'bob', 5)
-      # HardWorker.perform_at(5.minutes.from_now, 'bob', 5)
-     else
-       render json: { message: 'Required parameters missing!' }, status: 400
-     end    
+    render json: { number: number, redis:$redis_db.keys, parama: params_extract }
   end
 
   # return reading data for a particular reading with a sequence number
   def show    
-    reading = $redis_db.get("reading_" + params[:number].to_s) || @thermostat.readings.find_by(number: params[:number])
+    reading = $redis_db.get("reading_" + params[:number].to_s) || @thermostat.readings.find(params[:number])
     render json: { message: "Record not found" } and return if !reading
     render json: reading
   end
@@ -89,17 +67,15 @@ class ReadingsController < ApplicationController
   private
     # identify thermostat based on household token
     def get_thermostat
-      token = params[:household_token] 
-      render json: { message: 'Missing household token!' }, status: 401 and return if !token
-      @thermostat = Thermostat.find_by(household_token: token)
-      render json: { message: 'Invalid Household token!' }, status: 401 and return if !@thermostat
+      thermo_id = params[:thermostat_id] 
+      render json: { message: 'Missing Thermostat ID!' }, status: 401 and return if !thermo_id
+      @thermostat = Thermostat.find(thermo_id)
+      render json: { message: 'Invalid Thermostat ID!' }, status: 401 and return if !@thermostat
     end
 
-    
-
-    # parameters 
-    def permit_params
-      params.permit(:temperature, :humidity, :battery_charge, :household_token)
+    # reading params
+    def reading_params
+      params.require(:reading).permit(:temperature, :humidity, :battery_charge, :thermostat_id, :number)
     end
 
     # get avg, min, max readings for temperature/humidity/battery_charge for a household from the main DB
