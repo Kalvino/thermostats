@@ -3,7 +3,6 @@ class ReadingWorker
   sidekiq_options retry: true
 
   def perform(reading_params)
-    reading  = Reading.new(reading_params)
-    reading.save!
+    Reading.create!(reading_params)
   end
 end

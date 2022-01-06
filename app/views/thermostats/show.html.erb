@@ -1,0 +1,55 @@
+<div class="stats">
+  <center><h2>Thermostat Statistics</h2></center>
+  <table cellspacing="0" cellpadding="0" align="center" >
+    <thead>
+      <tr>
+        <td></td>
+        <th>Average</th>
+        <th>Minimum</th>
+        <th>Maximum</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="divider">
+        <td colspan="4">&nbsp;</td>
+      </tr>
+      <% @stats.each do |param| %>
+        <% param.each do |k,v| %>
+          <tr>
+            <th><%= k %></th>
+            <% v.each do |k,v| %>
+              <td><%= v %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="readings">
+  <center><h2>Thermostat Readings</h2></center>
+
+  <table cellspacing="0" cellpadding="0" align="center" width="80%">
+    <thead>
+      <tr>
+        <th>temperature</th>        
+        <th>Humidity</th>        
+        <th>Battery Charge</th>       
+        <th>Action</th>        
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="divider">
+        <td colspan="9">&nbsp;</td>
+      </tr>
+      <% @readings.each do |t| %>  
+        <tr>
+          <td><%= t.temperature %></td>
+          <td><%= t.humidity %></td>
+          <td><%= t.battery_charge %></td>
+          <td><%= link_to "Details", reading_path(t) %></td>
+        </tr> 
+      <% end %>
+    </tbody><br/>
+  </table>
+</div>

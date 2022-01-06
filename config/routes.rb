@@ -4,11 +4,14 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 
-  root to: 'readings#index'
+  root to: 'thermostats#index'
 
-  resources :readings, only: %i[index show create]
-
+  resources :thermostats do
+    resources :readings, shallow: true
+  end
   get 'house_readings', to: 'readings#house_readings', as: :house_readings
-  get 'reading', to: 'readings#show' 
-  get 'stats', to: 'readings#stats'
+  get 'reading', to: 'readings#show'
 end
+# <%= link_to 'Show Ad', [:edit, @ad] %>
+# <%= link_to 'edit', [:edit, @ad,@comment] %>
+

@@ -1,32 +1,28 @@
-# README
+# README 
+
+## Authored by Calvin
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+Things you may want to know:
 
-* Ruby version
+* Ruby version 2.7.1
+* Rails 6
+## Technologies
+- RSpec (unit/Integration testing)
+- Redis
+- Postgres
+- Sidekiq (Background)
 
-* System dependencies
+## Other Illustrations
+User of;
+- Service objects
+- concerns
+- composition over inheritence
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-## Calvin
-
-rails new finlink -d postgresql
+## For Learning
+rails new thermostat -d postgresql
 rails db:create
 
 rails g model Thermostat household_token:string location:string 
@@ -37,7 +33,7 @@ rails db:test:prepare
 rails db:seed
 
 Add jbuilder
-Add redis configredis
+Add redis config redis
 Add sidekiq - worker app/workers/reading_worker.rb 
 Add rspec
 add shoulda-matchers' gem for testing improvement for rspec
@@ -54,7 +50,7 @@ rails g controller Readings create index show
 rails g controller Thermostats 
 
 
-#tests
+# tests
 rake spec, rspec, bundle exec rspec
 
 rake db:reset #drops the database, then loads the schema with rake db:schema:load and then seeds the data with rake db:seed
@@ -103,7 +99,12 @@ start sidekiq
 bundle exec sidekiq
 
 
-
-
+Singleton Class - an anonymouse class added between an object and its actual class. When methods are called, the ones defined on the singleton class get precedence over the methods in the actual class.
+ruby singleton methods are methods uniq to a single object
 
 things to check  - shoulda matchers gem spec/rails/helper
+
+// TODO
+routing/crud
+Refactor test
+exception handling

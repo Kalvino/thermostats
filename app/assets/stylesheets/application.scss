@@ -13,3 +13,30 @@
  *= require_tree .
  *= require_self
  */
+
+table {
+  background-color:#FFF; 
+  color:#666666; 
+  font-family: 'avenir', 'Arial', 'Times New Roman', 'Times', 'serif';
+
+  thead{
+    tr{
+      padding-top:10px; 
+      padding-bottom:10px; 
+      background-color:#f5f5f5;
+    }
+  }
+
+  tr {
+    th, td {
+      text-align: center; 
+      padding: 5px;
+    }
+  }
+
+  tr.divider{
+    background-color:#c56933; 
+    height:5px; 
+    font-size:0px;
+  }
+}

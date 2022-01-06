@@ -1,0 +1,29 @@
+<center><h2>IOT Thermostat</h2></center>
+
+<%#= simple_format @thermostats.to_yaml %>
+<%#= debug @thermostats %>
+<%#= @thermostats.inspect %>
+
+<table cellspacing="0" cellpadding="0" width="80%" align="center">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Household Token</th>
+      <th>Location</th>
+      <th>Actions</th>        
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="divider">
+      <td colspan="4">&nbsp;</td>
+    </tr>
+    <% @thermostats.each do |t| %>  
+      <tr>
+        <th><%= t.id %></th>
+        <td><%= t.household_token %></td>
+        <td><%= t.location %></td>
+        <td><%= link_to "Readings", thermostat_path(t) %></td>
+      </tr> 
+    <% end %>
+  </tbody><br/>
+</table>
